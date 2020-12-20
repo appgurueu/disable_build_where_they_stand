@@ -1,6 +1,7 @@
-local visualize_box
--- uncomment for testing:
--- visualize_box = loadfile(minetest.get_modpath(minetest.get_current_modname()) .. "/test.lua")()
+local modname = minetest.get_current_modname()
+local conf = modlib.mod.configuration()
+_G[modname].conf = conf
+local visualize_box = loadfile(minetest.get_modpath(modname) .. "/test.lua")()
 
 local function aabb_collision(box, other_box, diff)
     for index, coord in pairs{"x", "y", "z"} do
@@ -162,18 +163,29 @@ local function get_node_collisionboxes(node, pos)
     return boxes
 end
 
-minetest.register_on_placenode(function(pos, newnode, _, oldnode)
-    for _, player in pairs(minetest.get_connected_players()) do
-        if vector.distance(player:get_pos(), pos) <= 10 then
-            -- HACK imposes a restriction on player & node collisionbox size for performance
-            local collisionbox_player = player:get_properties().collisionbox
-            local diff = vector.subtract(player:get_pos(), pos)
-            for _, collisionbox in pairs(get_node_collisionboxes(newnode, pos)) do
-                if visualize_box then visualize_box(pos, collisionbox) end
-                if aabb_collision(collisionbox_player, collisionbox, diff) then
-                    minetest.set_node(pos, oldnode)
-                    return true
-                end
+minetest.register_on_placenode(function(pos, newnode, _player, oldnode)
+    local entities, search_radius = conf.entities, conf.search_radius
+    local objects = entities and minetest.get_objects_inside_radius(pos, search_radius) or minetest.get_connected_players()
+    for index, object in pairs(objects) do
+        if entities then
+            if not (object:is_player() or object:get_properties().physical) then
+                objects[index] = nil
+            end
+        else
+            if vector.distance(object:get_pos(), pos) > search_radius then
+                objects[index] = nil
+            end
+        end
+    end
+    for _, object in pairs(objects) do
+        local collisionbox_player = object:get_properties().collisionbox
+        local diff = vector.subtract(object:get_pos(), pos)
+        for _, collisionbox in pairs(get_node_collisionboxes(newnode, pos)) do
+            if conf.test then visualize_box(pos, collisionbox) end
+            if aabb_collision(collisionbox_player, collisionbox, diff) then
+                -- TODO tell player why they can't build
+                minetest.set_node(pos, oldnode)
+                return true
             end
         end
     end
