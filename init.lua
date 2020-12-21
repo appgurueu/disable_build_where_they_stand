@@ -1,16 +1,9 @@
 local modname = minetest.get_current_modname()
+local dbwts = {}
+rawset(_G, modname, dbwts)
 local conf = modlib.mod.configuration()
-_G[modname].conf = conf
+dbwts.conf = conf
 local visualize_box = loadfile(minetest.get_modpath(modname) .. "/test.lua")()
-
-local function aabb_collision(box, other_box, diff)
-    for index, coord in pairs{"x", "y", "z"} do
-        if box[index] + diff[coord] > other_box[index + 3] or other_box[index] > box[index + 3] + diff[coord] then
-            return false
-        end
-    end
-    return true
-end
 
 local function get_collisionboxes(box_or_boxes)
     return type(box_or_boxes[1]) == "number" and {box_or_boxes} or box_or_boxes
@@ -179,10 +172,10 @@ minetest.register_on_placenode(function(pos, newnode, _player, oldnode)
     end
     for _, object in pairs(objects) do
         local collisionbox_player = object:get_properties().collisionbox
-        local diff = vector.subtract(object:get_pos(), pos)
+        local diff = modlib.vector.from_minetest(vector.subtract(object:get_pos(), pos))
         for _, collisionbox in pairs(get_node_collisionboxes(newnode, pos)) do
             if conf.test then visualize_box(pos, collisionbox) end
-            if aabb_collision(collisionbox_player, collisionbox, diff) then
+            if modlib.vector.box_box_collision(diff, collisionbox_player, collisionbox) then
                 -- TODO tell player why they can't build
                 minetest.set_node(pos, oldnode)
                 return true
