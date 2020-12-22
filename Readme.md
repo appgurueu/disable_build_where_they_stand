@@ -26,8 +26,8 @@ Search radius for entities & players
 
 * Type: number
 * Default: `10`
-* >= 0
-* < 100
+* &gt;= 0
+* &lt; 100
 
 ### `test`
 Enable debug mode (visualization of boxes)
