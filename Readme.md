@@ -14,7 +14,8 @@ Enable & probably configure it.
 
 Uses the new modlib configuration system.
 
-<!--modlib:conf:2-->### `entities`
+<!--modlib:conf:2-->
+### `entities`
 Also check for entities standing there
 
 * Type: boolean
