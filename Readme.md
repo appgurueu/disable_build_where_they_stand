@@ -16,12 +16,14 @@ Uses the new modlib configuration system.
 
 <!--modlib:conf:2-->
 ### `entities`
+
 Also check for entities standing there
 
 * Type: boolean
 * Default: `true`
 
 ### `search_radius`
+
 Search radius for entities & players
 
 * Type: number
@@ -30,6 +32,7 @@ Search radius for entities & players
 * &lt;= 100
 
 ### `test`
+
 Enable debug mode (visualization of boxes)
 
 * Type: boolean
