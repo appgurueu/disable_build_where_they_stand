@@ -9,7 +9,6 @@ return {
         search_radius = {
             type = "number",
             description = "Search radius for entities & players",
-            values = set,
             range = {min_exclusive = 0, max = 100},
             int = false,
             infinity = false,
