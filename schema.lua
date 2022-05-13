@@ -1,15 +1,24 @@
 return {
     type = "table",
     entries = {
+        players = {
+            type = "boolean",
+            description = "Check for players",
+            default = true
+        },
         entities = {
             type = "boolean",
-            description = "Also check for entities standing there",
+            description = "Check for entities",
+            default = true
+        },
+        nodes = {
+            type = "boolean",
+            description = "Check for nodes",
             default = true
         },
         search_radius = {
             type = "number",
             description = "Search radius for entities & players",
-            values = set,
             range = {min_exclusive = 0, max = 100},
             int = false,
             infinity = false,
