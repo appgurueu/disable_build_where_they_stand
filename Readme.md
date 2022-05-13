@@ -17,7 +17,21 @@ Uses the new modlib configuration system.
 <!--modlib:conf:2-->
 ### `entities`
 
-Also check for entities standing there
+Check for entities
+
+* Type: boolean
+* Default: `true`
+
+### `nodes`
+
+Check for nodes
+
+* Type: boolean
+* Default: `true`
+
+### `players`
+
+Check for players
 
 * Type: boolean
 * Default: `true`
@@ -28,8 +42,8 @@ Search radius for entities & players
 
 * Type: number
 * Default: `10`
-* &gt; 0
-* &lt;= 100
+* &gt; `0`
+* &lt;= `100`
 
 ### `test`
 

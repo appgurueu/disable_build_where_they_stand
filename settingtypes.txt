@@ -1,6 +1,14 @@
-# Also check for entities standing there
+# Check for entities
 disable_build_where_they_stand.entities (Disable build where they stand Entities) bool true
+
+# Check for nodes
+disable_build_where_they_stand.nodes (Disable build where they stand Nodes) bool true
+
+# Check for players
+disable_build_where_they_stand.players (Disable build where they stand Players) bool true
+
 # Search radius for entities & players
-disable_build_where_they_stand.search_radius (Disable build where they stand Search radius) float 10
+disable_build_where_they_stand.search_radius (Disable build where they stand Search radius) float 10 0.000000 100.000000
+
 # Enable debug mode (visualization of boxes)
 disable_build_where_they_stand.test (Disable build where they stand Test) bool false
