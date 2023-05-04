@@ -25,6 +25,12 @@ minetest.register_on_placenode(function(pos, newnode, _player, oldnode)
     end
     for _, object in pairs(objects) do
         local collisionbox_player = object:get_properties().collisionbox
+        -- Make the collisionbox slightly smaller to address literal edge cases such as scaffolding
+        local epsilon = 1e-6
+        for i = 1, 3 do
+            collisionbox_player[i] = collisionbox_player[i] + epsilon
+            collisionbox_player[i+3] = collisionbox_player[i+3] - epsilon
+        end
         local diff = modlib.vector.from_minetest(vector.subtract(object:get_pos(), pos))
         for _, collisionbox in pairs(modlib.minetest.get_node_collisionboxes(pos)) do
             if conf.test then visualize_box(pos, collisionbox) end
